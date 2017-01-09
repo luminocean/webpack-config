@@ -1,5 +1,4 @@
 - A setup script
-- copy other files in public/
 - write usage guide
 - minify regular js files
 - use of `InterpolateHtmlPlugin`

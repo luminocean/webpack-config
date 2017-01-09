@@ -66,7 +66,8 @@ const common = {
         // read the template html file, inject bundles from entries
         // and write the injected html file into output directory
         new HtmlWebpackPlugin({
-            template: PATHS.public + '/index.html'
+            template: PATHS.public + '/index.html',
+            favicon: PATHS.public + '/favicon.ico'
         })
     ]
 };
@@ -78,7 +79,12 @@ if (TARGET === 'start') {
         devtool: 'source-map',
         // config for webpack-dev-server
         devServer: {
-            contentBase: PATHS.build,
+            // Actually webpack-dev-server doesn't need a concrete path.
+            // It will serve built assets from a 'virtual' build path.
+            // Here we specify the public dir as the contentBase so that
+            // files can be served by webpack-dev-server from this dir besides
+            // the virtual build path
+            contentBase: PATHS.public,
             hot: true,
             inline: true,
             // stats: 'errors-only'
@@ -97,6 +103,7 @@ if (TARGET === 'build') {
         plugins: [
             new HtmlWebpackPlugin({
                 template: PATHS.public + '/index.html',
+                favicon: PATHS.public + '/favicon.ico',
                 minify: {
                     removeComments: true,
                     collapseWhitespace: true,
