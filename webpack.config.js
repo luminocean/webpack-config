@@ -16,7 +16,11 @@ const common = {
     },
     output: {
         path: PATHS.build,
-        filename: 'static/js/bundle.js'
+        // this will automatically form a nested folder structure
+        filename: `static/js/[name]${TARGET === 'build'?'.[hash:8]':''}.js`,
+        // this will be the prefix of the file name above
+        // default is ''
+        publicPath: '/'
     },
     // extension sequence used to resolve modules
     resolve: {
@@ -24,6 +28,19 @@ const common = {
     },
     module: {
         loaders: [{
+            exclude: [
+                /\.html$/,
+                /\.(js|jsx)$/,
+                /\.css$/,
+                /\.json$/,
+                /\.svg$/
+            ],
+            loader: 'url',
+            query: {
+                limit: 10000,
+                name: `static/media/[name]${TARGET === 'build'?'.[hash:8]':''}.[ext]`
+            }
+        },{
             test: /\.css$/,
             include: PATHS.app,
             loaders: ['style', 'css']
@@ -35,7 +52,8 @@ const common = {
             query: {
                 // need this two parameters for babel to handle es6 and react related features
                 presets: ['es2015', 'react'],
-                cacheDirectory: TARGET === 'start' // use cache only when running dev-server
+                // enables cache for faster recompilation
+                cacheDirectory: TARGET === 'start'
             }
         }]
     }
@@ -69,10 +87,6 @@ if (TARGET === 'start') {
 
 if (TARGET === 'build') {
     module.exports = merge(module.exports, {
-        output: {
-            path: PATHS.build,
-            filename: 'static/js/[name].[chunkhash:8].js'
-        },
         plugins: [
             new HtmlWebpackPlugin({
                 template: PATHS.public + '/index.html',
