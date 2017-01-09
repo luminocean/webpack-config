@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
-const NpmInstallPlugin = require('npm-install-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TARGET = process.env.npm_lifecycle_event;
 
@@ -17,7 +16,7 @@ const common = {
     },
     output: {
         path: PATHS.build,
-        filename: 'bundle.js'
+        filename: 'static/js/bundle.js'
     },
     // extension sequence used to resolve modules
     resolve: {
@@ -26,28 +25,27 @@ const common = {
     module: {
         loaders: [{
             test: /\.css$/,
-            loaders: ['style', 'css'],
-            include: PATHS.app
+            include: PATHS.app,
+            loaders: ['style', 'css']
         }, {
             // supports both .js and .jsx files
             test: /\.jsx?$/,
+            include: PATHS.app,
             loader: 'babel',
             query: {
                 // need this two parameters for babel to handle es6 and react related features
                 presets: ['es2015', 'react'],
-                cacheDirectory: true
-            },
-            include: PATHS.app
+                cacheDirectory: TARGET === 'start' // use cache only when running dev-server
+            }
         }]
     }
 };
 
 module.exports = common;
 
-// additional npm start specific config
-if(TARGET === 'start'){
+if (TARGET === 'start') {
     module.exports = merge(module.exports, {
-        devtool: 'eval-source-map',
+        devtool: 'source-map',
         // configs for webpack-dev-server
         devServer: {
             contentBase: PATHS.build,
@@ -60,8 +58,6 @@ if(TARGET === 'start'){
         plugins: [
             // support hot module replacement during development
             new webpack.HotModuleReplacementPlugin(),
-            // automatically install missing npm packages during webpack compilation
-            new NpmInstallPlugin({save: true}),
             // read the template html file, inject bundles from entries
             // and write the injected html file into output directory
             new HtmlWebpackPlugin({
@@ -71,8 +67,12 @@ if(TARGET === 'start'){
     });
 }
 
-if(TARGET === 'build'){
+if (TARGET === 'build') {
     module.exports = merge(module.exports, {
+        output: {
+            path: PATHS.build,
+            filename: 'static/js/[name].[chunkhash:8].js'
+        },
         plugins: [
             new HtmlWebpackPlugin({
                 template: PATHS.public + '/index.html',
