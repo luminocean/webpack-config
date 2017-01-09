@@ -8,7 +8,7 @@ export default class Component extends React.Component{
     render(){
         return (
             <div>
-                <span>A react component</span>
+                <p>A react component navigates you to a <a href="./random.html">random number</a>.</p>
             </div>
         );
     }

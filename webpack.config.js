@@ -10,9 +10,24 @@ const PATHS = {
     public: path.join(__dirname, 'public')
 };
 
+const HtmlWebpackMinifyOption = {
+    removeComments: true,
+    collapseWhitespace: true,
+    removeRedundantAttributes: true,
+    useShortDoctype: true,
+    removeEmptyAttributes: true,
+    removeStyleLinkTypeAttributes: true,
+    keepClosingSlash: true,
+    minifyJS: true,
+    minifyCSS: true,
+    minifyURLs: true
+};
+
 const common = {
+    // supports multiple bundles
     entry: {
-        app: PATHS.app
+        index: PATHS.app + '/index.js',
+        random: PATHS.app + '/random.js'
     },
     output: {
         path: PATHS.build,
@@ -70,11 +85,23 @@ const common = {
         }]
     },
     plugins: [
-        // read the template html file, inject bundles from entries
-        // and write the injected html file into output directory
+        // read the template html files, inject bundles from entries
+        // and write the injected html files into output directory
         new HtmlWebpackPlugin({
+            // index page
+            filename: 'index.html',
+            chunks: ['index'],
             template: PATHS.public + '/index.html',
-            favicon: PATHS.public + '/favicon.ico'
+            favicon: PATHS.public + '/favicon.ico',
+            minify: TARGET === 'start' ? null : HtmlWebpackMinifyOption
+        }),
+        new HtmlWebpackPlugin({
+            // random page
+            filename: 'random.html',
+            chunks: ['random'],
+            template: PATHS.public + '/random.html',
+            favicon: PATHS.public + '/favicon.ico',
+            minify: TARGET === 'start' ? null : HtmlWebpackMinifyOption
         })
     ]
 };
@@ -111,22 +138,6 @@ if (TARGET === 'build') {
             new webpack.optimize.UglifyJsPlugin({
                 compress: {
                     warnings: false // disable annoying warnings
-                }
-            }),
-            new HtmlWebpackPlugin({
-                template: PATHS.public + '/index.html',
-                favicon: PATHS.public + '/favicon.ico',
-                minify: {
-                    removeComments: true,
-                    collapseWhitespace: true,
-                    removeRedundantAttributes: true,
-                    useShortDoctype: true,
-                    removeEmptyAttributes: true,
-                    removeStyleLinkTypeAttributes: true,
-                    keepClosingSlash: true,
-                    minifyJS: true,
-                    minifyCSS: true,
-                    minifyURLs: true
                 }
             })
         ]
