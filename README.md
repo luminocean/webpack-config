@@ -9,6 +9,7 @@ This project also comes with a dummy little project shows how everything works.
 - supports conversion from ES6 code and JSX into ES5 version
 - support import css files (the actual css content will be inject into html page by js code in output js bundles) and images (in the final form of url link or base64 encoding) into js code
 - automatically add hash to resources (js, css, etc) in production build 
+- eslint support
 
 # how to use this project
 
@@ -32,6 +33,6 @@ Besides, you have to run the following commands to get it really works:
 
 `npm install webpack webpack-dev-server webpack-merge npm-install-webpack-plugin style-loader css-loader file-loader url-loader eslint eslint-loader html-webpack-plugin babel-loader babel-core babel-preset-es2015 --save-dev`
 
-If you are developing React, also run:
+If you are developing using React, also run:
 - `npm install react react-dom --save`
 - `npm install babel-preset-react --save-dev`
