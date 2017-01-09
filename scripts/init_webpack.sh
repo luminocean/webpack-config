@@ -22,6 +22,9 @@ if [ ! -e "package.json" ]; then
     npm init -y # init npm package
 fi
 
+# create a dir called 'app' which should contain all the sources for webpack to compile
+mkdir -p ${TARGET_PATH}/app
+
 # copy webpack.config.js file
 SCRIPT_PATH=$0
 cp `dirname $0`/../webpack.config.js ${TARGET_PATH}
