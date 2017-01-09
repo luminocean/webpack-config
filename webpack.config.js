@@ -26,6 +26,13 @@ const common = {
         extensions: ['', '.js', '.jsx']
     },
     module: {
+        preLoaders: [
+            {
+                test: /\.(js|jsx)$/,
+                loader: 'eslint',
+                include: PATHS.app,
+            }
+        ],
         loaders: [
         // load other resources to output dir
         {

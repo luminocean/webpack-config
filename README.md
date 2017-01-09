@@ -30,7 +30,7 @@ rm -r webpack-config
 If you don't want to use the automatic script, you copy the webpack config and modify it whatever you like.
 Besides, you have to run the following commands to get it really works:
 
-`npm install webpack webpack-dev-server webpack-merge npm-install-webpack-plugin style-loader css-loader file-loader url-loader html-webpack-plugin babel-loader babel-core babel-preset-es2015 --save-dev`
+`npm install webpack webpack-dev-server webpack-merge npm-install-webpack-plugin style-loader css-loader file-loader url-loader eslint eslint-loader html-webpack-plugin babel-loader babel-core babel-preset-es2015 --save-dev`
 
 If you are developing React, also run:
 - `npm install react react-dom --save`
