@@ -16,18 +16,19 @@ const common = {
     },
     output: {
         path: PATHS.build,
-        // this will automatically form a nested folder structure
+        // append hash only in production
         filename: `static/js/[name]${TARGET === 'build'?'.[hash:8]':''}.js`,
-        // this will be the prefix of the file name above
-        // default is ''
-        publicPath: '/'
+        // // this will be the prefix of the file name above whose default is ''
+        // publicPath: '/',
     },
     // extension sequence used to resolve modules
     resolve: {
         extensions: ['', '.js', '.jsx']
     },
     module: {
-        loaders: [{
+        loaders: [
+        // load other resources to output dir
+        {
             exclude: [
                 /\.html$/,
                 /\.(js|jsx)$/,
@@ -40,11 +41,15 @@ const common = {
                 limit: 10000,
                 name: `static/media/[name]${TARGET === 'build'?'.[hash:8]':''}.[ext]`
             }
-        },{
+        },
+        // handle import of css files and inject them into bundled js files
+        {
             test: /\.css$/,
             include: PATHS.app,
             loaders: ['style', 'css']
-        }, {
+        },
+        // handle js and jsx files by converting them into ES5 compatible js code
+        {
             // supports both .js and .jsx files
             test: /\.jsx?$/,
             include: PATHS.app,
@@ -56,7 +61,14 @@ const common = {
                 cacheDirectory: TARGET === 'start'
             }
         }]
-    }
+    },
+    plugins: [
+        // read the template html file, inject bundles from entries
+        // and write the injected html file into output directory
+        new HtmlWebpackPlugin({
+            template: PATHS.public + '/index.html'
+        })
+    ]
 };
 
 module.exports = common;
@@ -64,7 +76,7 @@ module.exports = common;
 if (TARGET === 'start') {
     module.exports = merge(module.exports, {
         devtool: 'source-map',
-        // configs for webpack-dev-server
+        // config for webpack-dev-server
         devServer: {
             contentBase: PATHS.build,
             hot: true,
@@ -75,12 +87,7 @@ if (TARGET === 'start') {
         },
         plugins: [
             // support hot module replacement during development
-            new webpack.HotModuleReplacementPlugin(),
-            // read the template html file, inject bundles from entries
-            // and write the injected html file into output directory
-            new HtmlWebpackPlugin({
-                template: PATHS.public + '/index.html'
-            })
+            new webpack.HotModuleReplacementPlugin()
         ]
     });
 }
