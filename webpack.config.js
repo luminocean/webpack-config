@@ -101,6 +101,11 @@ if (TARGET === 'start') {
 if (TARGET === 'build') {
     module.exports = merge(module.exports, {
         plugins: [
+            new webpack.optimize.UglifyJsPlugin({
+                compress: {
+                    warnings: false // disable annoying warnings
+                }
+            }),
             new HtmlWebpackPlugin({
                 template: PATHS.public + '/index.html',
                 favicon: PATHS.public + '/favicon.ico',
