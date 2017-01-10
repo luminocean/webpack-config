@@ -27,12 +27,12 @@ const common = {
     // supports multiple bundles
     entry: {
         index: PATHS.app + '/index.js',
-        random: PATHS.app + '/random.js'
+        random: PATHS.app + '/random.js',
     },
     output: {
         path: PATHS.build,
         // append hash only in production
-        filename: `static/js/[name]${TARGET === 'build'?'.[chunkhash:8]':''}.js`,
+        filename: `static/js/[name]${TARGET === 'build'?'.[hash:8]':''}.js`,
         chunkFilename: `static/js/[name]${TARGET === 'build'?'.[chunkhash:8]':''}.chunk.js`,
         // // this will be the prefix of the file name above whose default is ''
         // publicPath: '/',
@@ -86,17 +86,20 @@ const common = {
         }]
     },
     plugins: [
-        // extract common parts of bundles into an individual file
+        // search entry points in the chunks options and extract their common modules into a single file
+        // if the chunks option is not specified, all entry points will be used
         new webpack.optimize.CommonsChunkPlugin({
-            name: 'common',
-            filename: 'static/js/common.js'
+            chunks: ['index', 'random'],
+            name: 'page-common',
+            filename: `static/js/[name]${TARGET === 'start' ? '':'.[hash:8]'}.js`
         }),
+        new webpack.optimize.DedupePlugin(),
         // read the template html files, inject bundles from entries
         // and write the injected html files into output directory
         new HtmlWebpackPlugin({
             // index page
             filename: 'index.html',
-            chunks: ['common', 'index'],
+            chunks: ['page-common', 'index'],
             template: PATHS.public + '/index.html',
             favicon: PATHS.public + '/favicon.ico',
             minify: TARGET === 'start' ? null : HtmlWebpackMinifyOption
@@ -104,7 +107,7 @@ const common = {
         new HtmlWebpackPlugin({
             // random page
             filename: 'random.html',
-            chunks: ['common', 'random'],
+            chunks: ['page-common', 'random'],
             template: PATHS.public + '/random.html',
             favicon: PATHS.public + '/favicon.ico',
             minify: TARGET === 'start' ? null : HtmlWebpackMinifyOption

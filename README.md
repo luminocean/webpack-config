@@ -10,19 +10,22 @@ This project also comes with a dummy little project shows how everything works.
 - support import css files (the actual css content will be inject into html page by js code in output js bundles) and images (in the final form of url link or base64 encoding) into js code
 - automatically add hash to resources (js, css, etc) in production build 
 - eslint support
+- code splitting support
+- common chunk extraction support
 
 # how to use this project
 
 ```
-# create your project dir and clone this repo into it
+# Create your project dir and clone this repo into it
 mkdir your_project
 cd your_project
 git clone https://github.com/luminocean/webpack-config
 
-# copy the webpack config file into your project and init all essential stuff
+# Copy the webpack config file into your project and init all essential stuff
 ./webpack-config/scripts/init_webpack.sh .
 
-# all done, clean
+# All done. You can further check the this project to see how it works
+# Or you can just clean it and start modifing the webpack config file to fit your needs
 rm -r webpack-config
 ```
 

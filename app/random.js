@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as util from './util';
-// import * as misc from './misc'
 import './index.css'
 
 class RandomNumber extends React.Component{
@@ -19,7 +18,7 @@ class RandomNumber extends React.Component{
             this.setState({
                 randomNumber: misc.generateRandomNumber()
             });
-        }, 'random-dependencies'); // name the chunk
+        }, 'aync-loaded-random'); // name the chunk
     }
 
     render(){
