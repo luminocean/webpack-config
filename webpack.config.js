@@ -86,12 +86,17 @@ const common = {
         }]
     },
     plugins: [
+        // extract common parts of bundles into an individual file
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'common',
+            filename: 'static/js/common.js'
+        }),
         // read the template html files, inject bundles from entries
         // and write the injected html files into output directory
         new HtmlWebpackPlugin({
             // index page
             filename: 'index.html',
-            chunks: ['index'],
+            chunks: ['common', 'index'],
             template: PATHS.public + '/index.html',
             favicon: PATHS.public + '/favicon.ico',
             minify: TARGET === 'start' ? null : HtmlWebpackMinifyOption
@@ -99,7 +104,7 @@ const common = {
         new HtmlWebpackPlugin({
             // random page
             filename: 'random.html',
-            chunks: ['random'],
+            chunks: ['common', 'random'],
             template: PATHS.public + '/random.html',
             favicon: PATHS.public + '/favicon.ico',
             minify: TARGET === 'start' ? null : HtmlWebpackMinifyOption
@@ -148,7 +153,8 @@ if (TARGET === 'build') {
                 compress: {
                     warnings: false // disable annoying warnings
                 }
-            })
+            }),
+
         ]
     });
 }

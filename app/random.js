@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import * as util from './util';
 // import * as misc from './misc'
 import './index.css'
 
@@ -30,7 +31,7 @@ class RandomNumber extends React.Component{
 
 ReactDOM.render((
     <div>
-        <p>Hi, here's your number <RandomNumber /></p>
+        <p>Hi, here's your {util.toCapitalized('number')} <RandomNumber /></p>
         <p>Heads me back to <a href="./index.html">index</a>.</p>
     </div>
 ), document.getElementById('container'));

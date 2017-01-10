@@ -1,4 +1,2 @@
-- code spilting
-- CommonsChunkPlugin
 - AggressiveSplittingPlugin
 - (how webpack plugin works?)
