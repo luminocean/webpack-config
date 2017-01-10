@@ -135,6 +135,14 @@ if (TARGET === 'start') {
 if (TARGET === 'build') {
     module.exports = merge(module.exports, {
         plugins: [
+            // used to produce production code for react,
+            // instead of just minifing development code since some code used
+            // in development only will be minified instead of completely removed
+            new webpack.DefinePlugin({
+                'process.env': {
+                    NODE_ENV: JSON.stringify('production')
+                }
+            }),
             new webpack.optimize.UglifyJsPlugin({
                 compress: {
                     warnings: false // disable annoying warnings
