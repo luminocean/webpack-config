@@ -32,7 +32,8 @@ const common = {
     output: {
         path: PATHS.build,
         // append hash only in production
-        filename: `static/js/[name]${TARGET === 'build'?'.[hash:8]':''}.js`,
+        filename: `static/js/[name]${TARGET === 'build'?'.[chunkhash:8]':''}.js`,
+        chunkFilename: `static/js/[name]${TARGET === 'build'?'.[chunkhash:8]':''}.chunk.js`,
         // // this will be the prefix of the file name above whose default is ''
         // publicPath: '/',
     },
